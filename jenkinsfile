@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                // Clone the repository
+                git 'https://github.com/your-username/your-repo.git'
+
+                // Execute the Python script
+                sh 'python hello.py'
+            }
+        }
+    }
+
+    post {
+        success {
+            // Send email on successful build
+            emailext(
+                subject: "Build Successful",
+                body: "The build was successful.",
+                to: "your-email@example.com",
+            )
+        }
+        failure {
+            // Send email on build failure
+            emailext(
+                subject: "Build Failed",
+                body: "The build has failed.",
+                to: "your-email@example.com",
+            )
+        }
+    }
+}
